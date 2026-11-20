@@ -1,0 +1,160 @@
+<!-- Precios del mercado · AgroXperto. Generado por 85-precios/armar_bloque.py; no editar a mano. -->
+<div id="agx-precios" style="min-height:640px"></div>
+<script>
+(function(){
+  var DATOS='https://raw.githubusercontent.com/AgroXperto/precios/main/precios.json';
+  var host=document.getElementById('agx-precios'); if(!host||host.shadowRoot) return;
+  var R=host.attachShadow({mode:'open'});
+  R.innerHTML='<style>\n/* Layout: pizarra de mercado. Buscador y lista de productos a la izquierda; a la derecha el precio grande, su gráfica y la tabla de plazas. En teléfono se apila. */\n:host{\n  --bg:#ffffff; --panel:#f4f7f5; --ink:#0b0f0c; --muted:#5b665f; --line:#dfe6e1;\n  --green:#00bf63; --green-ink:#00703a; --green-soft:#e3f8ec; --down:#c2410c; --down-soft:#fdebe1;\n  --font:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;\n}\n*{box-sizing:border-box}\n:host{display:block;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.45;text-align:left}\n.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}\nheader.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 24px;border-bottom:2px solid var(--ink);padding-bottom:14px}\n.brand{font-weight:600;font-size:18px;letter-spacing:-.01em}\n.brand b{color:var(--green);font-weight:600}\nh1{font-size:clamp(28px,5vw,40px);line-height:1.05;margin:4px 0 0;font-weight:700;letter-spacing:-.025em;text-wrap:balance}\n.stamp{color:var(--muted);font-size:14px;text-align:right}\n.stamp strong{color:var(--ink);font-weight:600}\n.grid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:24px;align-items:start}\n@media (max-width:820px){ .grid{grid-template-columns:minmax(0,1fr)} }\n.side{display:flex;flex-direction:column;gap:12px;min-width:0}\n.search{width:100%;font:inherit;font-size:17px;padding:13px 14px;border:2px solid var(--ink);border-radius:10px;background:var(--bg);color:var(--ink)}\n.search::placeholder{color:var(--muted)}\n.search:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid var(--green);outline-offset:2px}\n.chips{display:flex;flex-wrap:wrap;gap:6px}\n.chip{font:inherit;font-size:14px;font-weight:500;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}\n.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}\n.list{border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:560px;background:var(--bg)}\n@media (max-width:820px){ .list{max-height:260px} }\n.gh{position:sticky;top:0;background:var(--panel);color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:7px 14px;border-bottom:1px solid var(--line)}\n.item{display:flex;align-items:baseline;justify-content:space-between;gap:10px;width:100%;text-align:left;font:inherit;background:none;border:0;border-bottom:1px solid var(--line);padding:11px 14px;color:var(--ink);cursor:pointer}\n.item:hover{background:var(--panel)}\n.item[aria-current="true"]{background:var(--green-soft);box-shadow:inset 4px 0 0 var(--green)}\n.item .n{min-width:0;font-weight:500}\n.item .p{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--muted);font-size:14px}\n.empty{padding:18px 14px;color:var(--muted)}\n.main{display:flex;flex-direction:column;gap:18px;min-width:0}\n.kicker{color:var(--muted);font-size:13px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}\nh2{font-size:clamp(24px,4vw,32px);line-height:1.1;margin:2px 0 0;font-weight:700;letter-spacing:-.02em;text-wrap:balance}\n.row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 28px}\n.big{font-size:clamp(46px,9vw,72px);font-weight:700;line-height:.95;letter-spacing:-.035em;font-variant-numeric:tabular-nums}\n.big small{font-size:.3em;font-weight:500;letter-spacing:0;color:var(--muted);margin-left:6px}\n.delta{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:15px;padding:6px 11px;border-radius:8px;font-variant-numeric:tabular-nums}\n.delta.up{background:var(--green-soft);color:var(--green-ink)}\n.delta.down{background:var(--down-soft);color:var(--down)}\n.delta.flat{background:var(--panel);color:var(--muted)}\n.meta{color:var(--muted);font-size:14px;max-width:62ch}\nlabel.sel{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:600;color:var(--muted);min-width:0;width:100%;max-width:420px}\nselect{font:inherit;font-size:16px;font-weight:500;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}\n.chart{border:1px solid var(--line);border-radius:12px;padding:12px 10px 6px;background:var(--bg);position:relative}\n.chart svg{display:block;width:100%;height:auto}\n.tip{position:absolute;top:10px;right:12px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right}\n.tip strong{color:var(--ink)}\n.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:12px}\ntable{border-collapse:collapse;width:100%;font-size:15px}\nth,td{padding:10px 14px;text-align:right;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums;white-space:nowrap}\nth:first-child,td:first-child{text-align:left;white-space:normal;min-width:180px}\nth{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:var(--panel);font-weight:600}\ntbody tr:last-child td{border-bottom:0}\ntbody tr{cursor:pointer}\ntbody tr:hover{background:var(--panel)}\ntd .up{color:var(--green-ink)} td .down{color:var(--down)} td .flat{color:var(--muted)}\n.old{color:var(--muted);font-size:12px;display:block}\n.more{align-self:flex-start;font:inherit;font-weight:600;font-size:14px;background:none;border:0;color:var(--ink);text-decoration:underline;cursor:pointer;padding:4px 0}\n.foot{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;border-top:1px solid var(--line);padding-top:18px}\n.note h3{margin:0 0 6px;font-size:15px;font-weight:700}\n.note p{margin:0;color:var(--muted);font-size:14px}\n.note a{color:var(--ink);font-weight:600}\n.una{display:grid;grid-template-columns:1fr auto;gap:4px 14px;font-size:14px;margin-top:8px}\n.una span:nth-child(even){font-variant-numeric:tabular-nums;font-weight:600;text-align:right}\n.cta{background:var(--ink);color:var(--bg);border-radius:14px;padding:18px 20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px}\n.cta p{margin:0;font-weight:600;font-size:17px;max-width:46ch}\n.cta a{background:var(--green);color:#04130a;font-weight:700;text-decoration:none;padding:11px 18px;border-radius:10px;white-space:nowrap}\n.err{padding:18px;border:1px solid var(--line);border-radius:12px;color:var(--muted)}\n\n.ptitle{font-size:clamp(22px,3.4vw,30px);margin:0}\n</style><div class="wrap">\n  <header class="top">\n    <div>\n      <h2 class="ptitle">Busca tu producto</h2>\n    </div>\n    <div class="stamp" id="stamp">Cargando precios…</div>\n  </header>\n\n  <div class="grid">\n    <aside class="side">\n      <input class="search" id="q" type="search" placeholder="Busca: jitomate, novillo, maíz…" autocomplete="off" aria-label="Buscar producto">\n      <div class="chips" id="chips"></div>\n      <div class="list" id="list" role="listbox" aria-label="Productos"></div>\n    </aside>\n\n    <section class="main" id="main">\n      <div class="err">Cargando…</div>\n    </section>\n  </div>\n\n  <div class="cta">\n    <p>Recibe gratis en tu correo los precios de la semana de los productos que tú vendes.</p>\n    <a href="https://www.agroxperto.com/gratis">Quiero mis precios</a>\n  </div>\n\n  <div class="foot">\n    <div class="note">\n      <h3>De dónde salen estos precios</h3>\n      <p>Del Sistema Nacional de Información e Integración de Mercados (SNIIM) de la Secretaría de Economía de México. Los revisamos cada mañana. Granos y huevo salen cada semana; insumos y alimento balanceado, cada mes. <a href="https://www.economia-sniim.gob.mx/" rel="noopener">Ver la fuente</a></p>\n    </div>\n    <div class="note">\n      <h3>Cómo leerlos</h3>\n      <p>Son precios de mayoreo en centrales de abasto, rastros y centros de distribución, en pesos mexicanos. No son el precio que le pagan al productor en el rancho: úsalos como referencia para negociar, no como precio de venta.</p>\n    </div>\n    <div class="note">\n      <h3>Pollo y huevo al productor</h3>\n      <p>Monitor avícola de la Unión Nacional de Avicultores, semana del 6 de noviembre de 2026. <a href="https://avicoladata.com.mx/industria" rel="noopener">Ver en avicoladata.com.mx</a></p>\n      <div class="una">\n        <span>Pollo vivo en granja</span><span>$35.78</span>\n        <span>Huevo blanco al productor</span><span>$32.21</span>\n        <span>Huevo blanco, mayoreo en centrales</span><span>$34.33</span>\n      </div>\n    </div>\n  </div>\n</div>';
+
+  var $=function(id){return R.getElementById(id)};
+  var MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  var S={products:[],byName:{},sector:'Todos',q:'',sel:null,plaza:'',all:false,hasta:null};
+
+  function fdate(iso,year){var p=iso.split('-');return (+p[2])+' '+MES[+p[1]-1]+(year?' '+p[0]:'')}
+  var MESL=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  function fd(iso,year,frec){ if(frec==='mensual'){var p=iso.split('-');return MESL[+p[1]-1]+' '+p[0]} return fdate(iso,year) }
+  function porUnidad(u){return u==='$/ton'?'por tonelada':'por kg'}
+  function money(v){return '$'+v.toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2})}
+  function days(a,b){return Math.round((Date.parse(b)-Date.parse(a))/864e5)}
+  function addDays(iso,n){var d=new Date(Date.parse(iso)+n*864e5);return d.toISOString().slice(0,10)}
+  function norm(s){return s.toLowerCase().normalize('NFD').replace(/\p{M}/gu,'')}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+  // valor más reciente de una serie en o antes de una fecha, sin ir más atrás de maxAge días
+  function at(pts,iso,maxAge){
+    for(var i=pts.length-1;i>=0;i--){ if(pts[i][0]<=iso){ return days(pts[i][0],iso)<=maxAge?pts[i]:null } }
+    return null;
+  }
+  // promedio simple de plazas por día (cada plaza aporta su último dato de hasta 7 días)
+  function promedio(prod){
+    var set={}; prod.plazas.forEach(function(pl){pl.puntos.forEach(function(p){set[p[0]]=1})});
+    var fechas=Object.keys(set).sort(), out=[];
+    fechas.forEach(function(f){
+      var v=[],lo=Infinity,hi=-Infinity;
+      prod.plazas.forEach(function(pl){var p=at(pl.puntos,f,prod.frec==='mensual'?45:prod.frec==='semanal'?10:7); if(p){v.push(p[1]); lo=Math.min(lo,p[2]); hi=Math.max(hi,p[3])}});
+      if(v.length) out.push([f,v.reduce(function(a,b){return a+b},0)/v.length,lo,hi,v.length]);
+    });
+    return out;
+  }
+  function cambio(pts){
+    if(!pts.length) return null;
+    var last=pts[pts.length-1], prev=at(pts,addDays(last[0],-7),14);
+    if(!prev||prev[0]===last[0]) prev=pts.length>1?pts[pts.length-2]:null;
+    if(!prev||!prev[1]) return null;
+    return {abs:last[1]-prev[1],pct:(last[1]-prev[1])/prev[1]*100,desde:prev[0]};
+  }
+  function deltaHTML(c,cls){
+    if(!c) return '<span class="'+(cls||'delta')+' flat">sin dato anterior para comparar</span>';
+    var dir=Math.abs(c.abs)<0.005?'flat':(c.abs>0?'up':'down'), arrow=dir==='up'?'▲':dir==='down'?'▼':'=';
+    var txt=dir==='flat'?'sin cambio':(c.abs>0?'+':'−')+money(Math.abs(c.abs))+' ('+(c.pct>0?'+':'−')+Math.abs(c.pct).toFixed(1)+'%)';
+    return '<span class="'+(cls||'delta')+' '+dir+'">'+arrow+' '+txt+'</span>';
+  }
+
+  function build(data){
+    var map={};
+    data.series.forEach(function(s){
+      var p=map[s.producto]||(map[s.producto]={nombre:s.producto,sector:s.sector,grupo:s.grupo,unidad:s.unidad,nota:s.nota,frec:s.frecuencia||'diaria',plazas:[]});
+      p.plazas.push({plaza:s.plaza,puntos:s.puntos});
+    });
+    S.hasta=data.ultimo_dato;
+    S.products=Object.keys(map).map(function(k){
+      var p=map[k];
+      // solo plazas con dato en los últimos 21 días cuentan como vigentes
+      p.plazas=p.plazas.filter(function(pl){return days(pl.puntos[pl.puntos.length-1][0],S.hasta)<=(p.frec==='mensual'?80:21)});
+      p.prom=promedio(p); p.key=norm(p.nombre+' '+p.grupo+' '+p.sector);
+      return p;
+    }).filter(function(p){return p.plazas.length&&p.prom.length})
+      .sort(function(a,b){return a.sector.localeCompare(b.sector,'es')||a.grupo.localeCompare(b.grupo,'es')||a.nombre.localeCompare(b.nombre,'es')});
+    S.products.forEach(function(p){S.byName[p.nombre]=p});
+    var np=0; S.products.forEach(function(p){np+=p.plazas.length});
+    $('stamp').innerHTML='Último dato: <strong>'+fdate(S.hasta,true)+'</strong><br>'+S.products.length+' productos · '+np+' precios por plaza · México';
+    var sectores=['Todos']; S.products.forEach(function(p){if(sectores.indexOf(p.sector)<0)sectores.push(p.sector)});
+    $('chips').innerHTML=sectores.map(function(s){return '<button class="chip" type="button" data-s="'+esc(s)+'" aria-pressed="'+(s===S.sector)+'">'+esc(s)+'</button>'}).join('');
+    var first=S.byName['Jitomate saladette']||S.products[0];
+    S.sel=first.nombre; renderList(); renderMain();
+  }
+
+  function renderList(){
+    var q=norm(S.q.trim()), html='', g='';
+    S.products.forEach(function(p){
+      if(S.sector!=='Todos'&&p.sector!==S.sector) return;
+      if(q&&p.key.indexOf(q)<0) return;
+      var head=p.sector+' · '+p.grupo;
+      if(head!==g){g=head; html+='<div class="gh">'+esc(head)+'</div>'}
+      var last=p.prom[p.prom.length-1];
+      html+='<button class="item" type="button" role="option" data-p="'+esc(p.nombre)+'" aria-current="'+(p.nombre===S.sel)+'"><span class="n">'+esc(p.nombre)+'</span><span class="p">'+money(last[1])+'</span></button>';
+    });
+    $('list').innerHTML=html||'<div class="empty">No tenemos ese producto todavía. Prueba con otro nombre, por ejemplo «chile» o «res».</div>';
+  }
+
+  function chart(pts,unidad,frec){
+    var W=760,H=300,L=64,R=14,T=14,B=30;
+    var t0=Date.parse(pts[0][0]), t1=Date.parse(pts[pts.length-1][0]); if(t1===t0) t1=t0+864e5;
+    var lo=Infinity,hi=-Infinity; pts.forEach(function(p){lo=Math.min(lo,p[2]);hi=Math.max(hi,p[3])});
+    var pad=(hi-lo)*0.1||hi*0.05||1; lo=Math.max(0,lo-pad); hi=hi+pad;
+    var step=Math.pow(10,Math.floor(Math.log10((hi-lo)/4))); var k=(hi-lo)/4/step; step*=k<1.5?1:k<3.5?2:k<7.5?5:10;
+    var y0=Math.floor(lo/step)*step, y1=Math.ceil(hi/step)*step;
+    function X(iso){return L+(Date.parse(iso)-t0)/(t1-t0)*(W-L-R)}
+    function Y(v){return T+(1-(v-y0)/(y1-y0))*(H-T-B)}
+    var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Gráfica del precio en los últimos días">';
+    for(var v=y0;v<=y1+step/2;v+=step){ s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(v).toFixed(1)+'" y2="'+Y(v).toFixed(1)+'" stroke="var(--line)" stroke-width="1"/><text x="'+(L-8)+'" y="'+(Y(v)+4).toFixed(1)+'" text-anchor="end" font-size="12" fill="var(--muted)" font-family="inherit">$'+(step<1?v.toFixed(2):Math.round(v).toLocaleString('es-MX'))+'</text>' }
+    var n=Math.min(5,pts.length), seen={};
+    for(var i=0;i<n;i++){ var p=pts[Math.round(i*(pts.length-1)/Math.max(1,n-1))]; if(seen[p[0]])continue; seen[p[0]]=1;
+      var x=X(p[0]); s+='<text x="'+x.toFixed(1)+'" y="'+(H-8)+'" text-anchor="'+(i===0?'start':i===n-1?'end':'middle')+'" font-size="12" fill="var(--muted)" font-family="inherit">'+fd(p[0],false,frec)+'</text>' }
+    var up=pts.map(function(p){return X(p[0]).toFixed(1)+','+Y(p[3]).toFixed(1)}), dn=pts.slice().reverse().map(function(p){return X(p[0]).toFixed(1)+','+Y(p[2]).toFixed(1)});
+    s+='<polygon points="'+up.concat(dn).join(' ')+'" fill="var(--green)" fill-opacity=".14" stroke="none"/>';
+    s+='<polyline points="'+pts.map(function(p){return X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1)}).join(' ')+'" fill="none" stroke="var(--green)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>';
+    var l=pts[pts.length-1]; s+='<circle cx="'+X(l[0]).toFixed(1)+'" cy="'+Y(l[1]).toFixed(1)+'" r="5.5" fill="var(--green)" stroke="var(--bg)" stroke-width="2.5"/>';
+    s+='<line id="cur" x1="0" x2="0" y1="'+T+'" y2="'+(H-B)+'" stroke="var(--ink)" stroke-width="1" stroke-dasharray="3 3" visibility="hidden"/>';
+    s+='<rect id="hit" x="'+L+'" y="'+T+'" width="'+(W-L-R)+'" height="'+(H-T-B)+'" fill="transparent"/></svg>';
+    return {svg:s,X:X,W:W};
+  }
+
+  function renderMain(){
+    var p=S.byName[S.sel]; if(!p){return}
+    var pl=S.plaza?p.plazas.filter(function(x){return x.plaza===S.plaza})[0]:null;
+    if(S.plaza&&!pl){S.plaza=''}
+    var pts=pl?pl.puntos:p.prom, last=pts[pts.length-1], c=cambio(pts);
+    var plazas=p.plazas.map(function(x){var l=x.puntos[x.puntos.length-1];return {plaza:x.plaza,last:l,c:cambio(x.puntos)}}).sort(function(a,b){return b.last[1]-a.last[1]});
+    var opts='<option value="">Promedio de '+p.plazas.length+(p.plazas.length===1?' lugar':' lugares')+'</option>'+p.plazas.map(function(x){return x.plaza}).sort(function(a,b){return a.localeCompare(b,'es')}).map(function(n){return '<option value="'+esc(n)+'"'+(n===S.plaza?' selected':'')+'>'+esc(n)+'</option>'}).join('');
+    var ch=chart(pts,p.unidad,p.frec), show=S.all?plazas:plazas.slice(0,8);
+    var donde=pl?esc(pl.plaza):'promedio simple de '+last[4]+(last[4]===1?' plaza':' plazas')+' con dato reciente';
+    var h='<div><div class="kicker">'+esc(p.sector)+' · '+esc(p.grupo)+'</div><h2>'+esc(p.nombre)+'</h2></div>';
+    h+='<div class="row"><div class="big">'+money(last[1])+'<small>'+porUnidad(p.unidad)+'</small></div><div>'+deltaHTML(c)+'<div class="meta" style="margin-top:6px">'+(c?'contra '+(p.frec==='mensual'?'':'el ')+fd(c.desde,false,p.frec):'')+'</div></div></div>';
+    h+='<p class="meta">Dato '+(p.frec==='mensual'?'de ':'del ')+fd(last[0],true,p.frec)+', '+donde+'. Rango: '+money(last[2])+' a '+money(last[3])+'. '+esc(p.nota.charAt(0).toUpperCase()+p.nota.slice(1))+'.</p>';
+    h+='<label class="sel" for="plaza">Plaza<select id="plaza">'+opts+'</select></label>';
+    h+='<div class="chart" id="chart">'+ch.svg+'<div class="tip" id="tip">Pasa el dedo o el cursor por la gráfica</div></div>';
+    h+='<div class="tablebox"><table><thead><tr><th>Plaza</th><th>Precio</th><th>Mín.</th><th>Máx.</th><th>Cambio</th></tr></thead><tbody>';
+    show.forEach(function(r){
+      var viejo=r.last[0]!==S.hasta?'<span class="old">dato '+(p.frec==='mensual'?'de ':'del ')+fd(r.last[0],false,p.frec)+'</span>':'';
+      h+='<tr data-pl="'+esc(r.plaza)+'"><td>'+esc(r.plaza)+viejo+'</td><td><strong>'+money(r.last[1])+'</strong></td><td>'+money(r.last[2])+'</td><td>'+money(r.last[3])+'</td><td>'+(r.c?deltaHTML(r.c,'d'):'<span class="flat">—</span>')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    if(plazas.length>8) h+='<button class="more" type="button" id="more">'+(S.all?'Ver menos plazas':'Ver las '+plazas.length+' plazas')+'</button>';
+    $('main').innerHTML=h;
+    $('plaza').onchange=function(e){S.plaza=e.target.value; renderMain()};
+    if($('more')) $('more').onclick=function(){S.all=!S.all; renderMain()};
+    Array.prototype.forEach.call($('main').querySelectorAll('tbody tr'),function(tr){tr.onclick=function(){S.plaza=tr.getAttribute('data-pl'); renderMain(); $('main').scrollIntoView({block:'start',behavior:'smooth'})}});
+    var svg=$('chart').querySelector('svg'), cur=svg.querySelector('#cur'), tip=$('tip');
+    function move(ev){
+      var r=svg.getBoundingClientRect(), cx=(ev.touches?ev.touches[0].clientX:ev.clientX), x=(cx-r.left)/r.width*ch.W, best=pts[0], bd=1e9;
+      pts.forEach(function(q){var d=Math.abs(ch.X(q[0])-x); if(d<bd){bd=d;best=q}});
+      cur.setAttribute('x1',ch.X(best[0])); cur.setAttribute('x2',ch.X(best[0])); cur.setAttribute('visibility','visible');
+      tip.innerHTML=fd(best[0],true,p.frec)+' · <strong>'+money(best[1])+'</strong><br>mín. '+money(best[2])+' · máx. '+money(best[3]);
+    }
+    svg.addEventListener('mousemove',move); svg.addEventListener('touchstart',move,{passive:true}); svg.addEventListener('touchmove',move,{passive:true});
+  }
+
+  $('q').addEventListener('input',function(e){S.q=e.target.value; renderList()});
+  $('chips').addEventListener('click',function(e){var b=e.target.closest('.chip'); if(!b)return; S.sector=b.getAttribute('data-s');
+    Array.prototype.forEach.call($('chips').children,function(c){c.setAttribute('aria-pressed',c===b)}); renderList()});
+  $('list').addEventListener('click',function(e){var b=e.target.closest('.item'); if(!b)return; S.sel=b.getAttribute('data-p'); S.plaza=''; S.all=false; renderList(); renderMain();
+    if(window.matchMedia('(max-width:820px)').matches) $('main').scrollIntoView({block:'start',behavior:'smooth'})});
+
+  fetch(DATOS,{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()}).then(build).catch(function(){
+    $('stamp').textContent='No pudimos cargar los precios'; $('main').innerHTML='<div class="err">No pudimos cargar los precios de hoy. Vuelve a abrir la página en unos minutos.</div>';
+  });
+
+})();
+</script>
